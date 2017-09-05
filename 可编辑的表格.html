@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		*{
+			font-size:12px;
+			font-family:"微软雅黑";
+		}
+		
+		table{
+			border:1px solid #999;
+			border-collapse:collapse;/*修正单元格之间的边框为可合并*/
+			width:400px;
+		}
+		
+		table tr{
+			line-height:24px;
+		}
+		
+		table tbody th{
+			background:#36F;
+			width:50%;
+		}
+		
+		table td{
+			text-align:center;
+		}
+		
+		a{
+			display:inline-block;
+			padding:8px;
+			background:#3C6;
+			text-decoration:none;
+			font-size:18px；
+			font-weight:bold;
+			color:#FC3;
+			font-family:"隶书";
+			margin-left:10px;
+		}
+		
+		a:hover{
+			background:#666;
+		}
+		
+		#tishiInfo{
+			border:1px solid #699;
+			border-radius:3px;
+			width:200px;
+			height:30px;
+			line-height:30px;
+			font-size:14px;
+			
+			color:#fff;
+			padding-left:30px;
+			position:absolute;
+			top:200px;
+			left:600px;
+			display:none;
+		}
+	</style>
+</head>
+<body>
+	<table border="1px" cellpadding="0px" cellspacing="0px" id="mytable" align="center" width="600px">
+    	<thead>
+        	<tr>
+            	<th colspan="2">学生信息表</th>
+            </tr>
+        </thead>
+        <tbody>
+        	<tr>
+            	<th>学号</th>
+                <th>姓名</th>
+            </tr>
+            <tr>
+            	<td>08301440110</td>
+                <td>张三</td>
+            </tr>
+        	<tr>
+            	<td>08301440111</td>
+                <td>李四</td>
+            </tr>
+            <tr>
+            	<td>08301440112</td>
+                <td>王五</td>
+            </tr>
+            <tr>
+            	<td>08301440113</td>
+                <td>赵六</td>
+            </tr>
+            <tr>
+            	<td>08301440114</td>
+                <td>钱七</td>
+            </tr>
+            <tr>
+            	<td>08301440115</td>
+                <td>王八</td>
+            </tr>
+             <tr>
+            	<td>08301440112</td>
+                <td>王五</td>
+            </tr>
+            <tr>
+            	<td>08301440113</td>
+                <td>赵六</td>
+            </tr>
+            <tr>
+            	<td>08301440114</td>
+                <td>钱七</td>
+            </tr>
+            <tr>
+            	<td>08301440115</td>
+                <td>王八</td>
+            </tr>
+        </tbody>
+    </table>
+    <br /> <br />
+    <center><a href="javascript:delInfo()">删除光标所在行</a><a href="javascript:addInfo()">添加一行</a></center>
+    <p id="tishiInfo">信息修改成功...</p>
+
+    <script type="text/javascript">
+        var delObj;
+
+        window.onload=function(){
+        	showInfo();
+        }
+        function showInfo(){
+        	var tbodyTrs=document.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+        	for(var i=1;i<tbodyTrs.length;i++){
+        		if(i%2==0){
+        		tbodyTrs[i].style.backgroundColor="#39f";
+        	  }
+        	  tbodyTrs[i].index=i;
+        	  tbodyTrs[i].onmouseover=function(){
+        	  	this.style.backgroundColor="#6ff";
+        	  }
+        	   tbodyTrs[i].onmouseout=function(){
+        	   	if(this.index%2==0){
+        	  	this.style.backgroundColor="#39f";
+        	    }else{
+        	    	this.style.backgroundColor="#fff";
+        	    }
+        	  }
+        	}
+       //获取所有的td,来绑点鼠标点击事件
+       var tds=document.getElementsByTagName("td");
+       if(arguments.length==1){
+       	tds[tds.length-1].addEventListener("click",tdclick);
+        tds[tds.length-2].addEventListener("click",tdclick);
+       }else{
+       	for(var j=0;j<tds.length;j++){
+       	tds[j].addEventListener("click",tdclick);
+       }                        //事件名 函数
+
+       }
+       
+       function tdclick(){
+       	//点击，创建一个input标签，插入到td里面    
+       	var inputObj=document.createElement("input");
+       	inputObj.type="text";
+       	inputObj.style.cssText="border:0px;font-size:12px"; //把css语句当做字符全
+
+       	var tdObj=this;    
+       	//把td里面的值放到input标签里去
+
+       	//获取要删除的行
+       	delObj=tdObj.parentNode;
+       	inputObj.value=tdObj.innerHTML;
+       	var text=tdObj.innerHTML
+        tdObj.innerHTML="";
+        //吧input标签插入到td里去
+        tdObj.appendChild(inputObj);
+        //为了避免再点击一次，默认选中
+        inputObj.select();
+
+        //删除td的click事件
+        tdObj.removeEventListener("click",tdclick);
+        inputObj.onclick=function(){
+        	return false;
+        }
+
+        //
+        inputObj.onkeyup=function(event){
+        	var event=event?event:window.event;
+        	var keycode=event.keyCode;
+        	if(keycode==13){
+        		var val=this.value;  //这里的this是inputObj；
+        		tdObj.innerHTML=val;
+        		tdObj.removeEventListener("click",tdclick);
+              	tdObj.addEventListener("click",tdclick);
+        	}
+        }
+        //添加失去焦点事件，用户恢复文本值
+        inputObj.onblur=function(){
+        	tdObj.innerHTML=text;
+            tdObj.removeEventListener("click",tdclick);
+            tdObj.addEventListener("click",tdclick);
+         }
+      }
+
+   }
+   function addInfo(){
+   	 var tbody=document.getElementsByTagName("tbody")[0];
+   	 var trInfo=document.createElement("tr");
+   	 var tdInfo1=document.createElement("td");
+   	 tdInfo1.innerHTML="7274353";
+   	 trInfo.appendChild(tdInfo1);
+   	 var tdInfo2=document.createElement("td");
+   	 tdInfo2.innerHTML="厉鬼";
+   	 trInfo.appendChild(tdInfo2);
+
+   	 tbody.appendChild(trInfo);
+   	 showInfo(1);
+   }
+
+   function delInfo(){
+   	 var result=confirm("是否真的删除数据");
+   	 if(result){
+   	 	delObj.parentNode.removeChild(delObj);
+
+
+   	 	var tbodyTrs=document.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+        	for(var i=1;i<tbodyTrs.length;i++){
+        		tbodyTrs[i].style.backgroundColor="#fff";
+        		if(i%2==0){
+        		tbodyTrs[i].style.backgroundColor="#39f";
+        	  }
+        	  tbodyTrs[i].index=i;
+        	  tbodyTrs[i].onmouseover=function(){
+        	  	this.style.backgroundColor="#6ff";
+        	  }
+        	   tbodyTrs[i].onmouseout=function(){
+        	   	if(this.index%2==0){
+        	  	this.style.backgroundColor="#39f";
+        	    }else{
+        	    	this.style.backgroundColor="#fff";
+        	    }
+        	  }
+        	}
+   	 }
+   }
+    </script>
+</body>
+</html>

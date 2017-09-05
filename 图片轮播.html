@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8" >
+	<style type="text/css">
+		*{
+			margin:0px;
+			padding: 0px;
+	  }
+		
+		li{
+			list-style:none;
+		}
+		body{
+		  background-color: #dfdfdf;
+		}
+		.miantype-left{
+			margin: 10px 0 0 11px;
+			width:545px;
+			height: 260px;
+		}
+		.scroll_mid{
+			background-color: #f2f2f3;
+			border-right: solid 1px #d6d5d6;
+			border-left: solid 1px #d6d5d6;
+			width:535px;
+			height: 250px;
+			padding: 5px 5px 5px 5px;
+			float:left;
+			position:relative;
+		}
+		#pic{
+			float:right;
+			width:535px;
+			height: 250px;
+
+		}
+		#scroll_number{
+			clear:both;
+			padding-right:10px;
+			display: inline;
+		}
+		#scroll_number li{
+ 			width:20px;
+ 			line-height: 16px;
+ 			text-align: center;
+ 			border:solid 1px #999;
+ 			margin-top: 5px;
+ 			font-size: 12px;
+ 			float: left;
+ 		}
+ 	.scroll_number_out{
+ 		background-color: #f2f2f3;
+ 	}
+ 	.scroll_number_over{
+ 		background-color: #f96;
+ 		color:#fff;
+ 	}
+	</style>
+</head>
+<body>
+<div class="maintype-left">
+	<div class="scroll-mid">
+		<img src="images/pic_1.jpg" id="pic" />
+		<ul id="scroll_number">
+			<li onMouseOver="show(1)" onMouseout="start()">1</li>
+			<li onMouseOver="show(2)" onMouseout="start()">2</li>
+			<li onMouseOver="show(3)" onMouseout="start()">3</li>
+			<li onMouseOver="show(4)" onMouseout="start()">4</li>
+			<li onMouseOver="show(5)" onMouseout="start()">5</li>
+			<li onMouseOver="show(6)" onMouseout="start()">6</li>
+		</ul>
+	</div>
+</div>
+  <script>
+  	  var timer;
+  	  var index=0;
+  	  function show(id){
+  	  	if(Number(id)){
+  	  		//清除定时器
+  	  		clearInterval(timer);
+  	  		index=id;
+  	  	}else{
+  	  		//网页加载之后就执行的
+  	  		//首先，判定index
+  	  		index=index%6+1;
+  	  	}
+  	  	  //设置图片
+  	  	  //index=index%6+1;
+  	  	  document.getElementById("pic").setAttribute("src","images/pic_"+index+".jpg");
+  	  	  //改变li的clas，让其高亮显示
+  	  	  var lis=document.getElementsByTagName("li");
+  	  	  for(var i=0;i<lis.length;i++){
+  	  	  	 //每次设置之前，都还原一次
+  	  	  	 lis[i].setAttribute("class","scroll_number_out");
+  	  	  	 if(i==index-1){
+  	  	  	 	lis[i].setAttribute("class","scroll_number_over");
+  	  	  	 }
+  	  	  }
+  	  	 
+
+  	  }
+  	  show();
+  	  timer=window.setInterval("show()",2000);
+  	  function start(){
+  	  	timer=window.setInterval("show()",2000);
+  	  }
+  </script>
+</body>
+</html>

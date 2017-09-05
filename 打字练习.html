@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title></title>
+	<meta charset="utf-8" />
+	<style>
+		.style1{
+			color:lime;
+		}
+		.style2{
+			color:red;
+		}
+	</style>
+</head>
+<body>
+  打字练习：<h2 id="test"></h2>
+  <p>输入内容：<input type="text" size="50" id="inp" /></p>
+  <script>
+  	  //打字内容
+  	  var str="welcome to study center";
+  	  window.onload=function(){
+  	  	var htmlstr="";
+  	  	for(var i=0;i<str.length;i++){
+  	  		htmlstr+="<span id='myspan"+i+"'>"+str.substring(i,i+1)+"</span>"
+  	  	}
+  	  	document.getElementById("test").innerHTML=htmlstr;
+  	  }
+      var j=0;
+  	  var inp=document.getElementById("inp");
+  	  inp.onkeydown=function(event){
+       var e=event?event:window.event;
+       var keycode=e.keyCode;
+       if((keycode>=65&& keycode<=90) || keycode==32||keycode==8){
+       var realKey=String.fromCharCode(keycode+32);
+   
+       if(str.substring(j,j+1)==realKey){
+       	document.getElementById("myspan"+j).className="style1";
+       }else if(keycode==8){
+       	j--;
+       	if(j<0){
+       		j=0;
+       	}
+       	document.getElementById("myspan"+j).className="";
+       	return;
+       }else{
+         	document.getElementById("myspan"+j).className="style2";
+       }
+       j++;
+  	  }
+  	}
+  </script>
+</body>
+</html>
